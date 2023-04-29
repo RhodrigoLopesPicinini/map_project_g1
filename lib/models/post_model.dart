@@ -5,16 +5,10 @@ part 'post_model.g.dart';
 
 @JsonSerializable()
 class PostModel {
-  int userId;
-  int id;
-  String title;
-  String body;
+  String value;
 
   PostModel ({
-    required this.userId,
-    required this.id,
-    required this.title,
-    required this.body,
+    required this.value
 
   });
 

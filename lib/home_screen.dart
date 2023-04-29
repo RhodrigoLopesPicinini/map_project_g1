@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:map_project_1/models/post_model.dart';
-import 'package:map_project_1/screens/google_offices_map.dart';
 
 import 'package:map_project_1/screens/simple_map_screen.dart';
 import 'package:map_project_1/service/api_service.dart';
@@ -36,18 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const SimpleMapScreen();
                 }));
               },
-              child: const Text("Passo Fundo/Atitus")),
+              child: const Text("Atitus / Passo Fundo Shopping")),
           const SizedBox(
             height: 50,
-          ),
-          ElevatedButton(
-            onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return const GoogleOfficesMap();
-                }));
-              },
-            child: const Text("Escritórios da Google")
           ),
         ]),
       ),
@@ -63,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       future: apiService.getPosts(),
       builder: (context,snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<PostModel> posts = snapshot.data!;
+          final PostModel posts = snapshot.data!;
           return _posts(posts);
         } else {
           return const Center(
@@ -74,38 +64,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _posts(List<PostModel> posts) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: posts.length,
-      itemBuilder: (context,index) {
-        return Container(
-          margin: const EdgeInsets.all(12),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-           color: Colors.white,
-           borderRadius: BorderRadius.circular(10),
-           border: Border.all(color: Colors.black38,width: 1),
-          ),
-          child: 
-          SingleChildScrollView(child: Column(
+  Widget _posts(PostModel posts) {
+    return Column(
             children: [
               Text(
-                posts[index].title,
+                posts.value,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 10,),
-              Text(
-                posts[index].body,
+              const Text(
+                '- Chuck Norris',
               )
             ]
-          ),
-          )
-        );
-      },
-    );
+          );
+        
+        
+      }
+
   }
-}

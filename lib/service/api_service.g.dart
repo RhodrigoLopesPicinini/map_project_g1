@@ -13,7 +13,7 @@ class _ApiService implements ApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://jsonplaceholder.typicode.com/';
+    baseUrl ??= 'https://api.chucknorris.io/';
   }
 
   final Dio _dio;
@@ -21,27 +21,25 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   @override
-  Future<List<PostModel>> getPosts() async {
+  Future<PostModel> getPosts() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<PostModel>>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PostModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'posts',
+              'jokes/random',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = PostModel.fromJson(_result.data!);
     return value;
   }
 
